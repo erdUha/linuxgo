@@ -12,6 +12,7 @@
 	</div>
 </template>
 
+<style src="./style.css"></style>
 <style src="./transitions.css"></style>
 
 <style>
@@ -25,7 +26,7 @@ html, body {
 	background-color: cyan;
 }
 .pages {
-	padding: 50px;
+	padding-top: 50px;
 	width: 100%;
 	height: 100vh;
 }

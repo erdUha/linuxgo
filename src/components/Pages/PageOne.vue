@@ -1,7 +1,12 @@
+<script setup>
+</script>
+
 <template>
 	<div>
 		<div class="pages" id="page-one">
-			<h1>Page One</h1>
+			<div data-aos="zoom-out-down">
+				<h1>Page One</h1>
+			</div>
 		</div>
 	</div>
 </template>
