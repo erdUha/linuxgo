@@ -13,13 +13,13 @@ export const router = createRouter({
 			path: '/',
 			name: 'home',
 			component: PageOne,
-			meta: { transition: 'slide-left' },
+			meta: { transition: 'fade' },
 		},
 		{
 			path: '/about',
 			name: 'about',
 			component: PageTwo,
-			meta: { transition: 'slide-right' },
+			meta: { transition: 'fade' },
 		}
 	]
 })
