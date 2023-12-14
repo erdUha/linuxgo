@@ -5,6 +5,8 @@
 	<div id="navbar">
 		<router-link class="link" to="/">Main</router-link>
 		<router-link class="link" to="/about">About</router-link>
+		<a class="link" to="/login">Login</a>
+		<a class="link" to="/signup">Sign Up</a>
 	</div>
 </template>
 
