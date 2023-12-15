@@ -1,0 +1,16 @@
+html
+	head
+		meta(charset="UTF-8")
+		title Регистрация
+		link(rel="stylesheet" href="/style.css")
+	body
+		h2= message
+		h1 Регистрация
+		form(action="/signup" method="post")
+			input(type="email" name="email" placeholder="Эл. почта (Не обязательно)")
+			br
+			input(type="text" name="username" placeholder="Имя пользователя")
+			br
+			input(type="password" pattern=".{8,}" required title="8 characters minimum" name="password" placeholder="Пароль")
+			br
+			input(type="submit" value="Зарегестрироваться")

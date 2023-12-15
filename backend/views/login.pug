@@ -1,0 +1,14 @@
+html
+	head
+		meta(charset="UTF-8")
+		title Войти в аккаунт
+		link(rel="stylesheet" href="/style.css")
+	body
+		h2= message
+		h1 Авторизация
+		form(action="/login" method="post")
+			input(type="text" name="username" placeholder="Имя пользователя / Эл. почта") 
+			br
+			input(type="password" name="password" placeholder="Пароль") 
+			br
+			input(type="submit" value="Войти")

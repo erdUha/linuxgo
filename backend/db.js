@@ -1,5 +1,5 @@
-require('dotenv').config();
-const { Pool } = require('pg');
+require('dotenv').config(); // Для импортирования переменных окружения
+const { Pool } = require('pg'); // Нужен для подключения базы данных от PostgreSQL
 
 // Объявление переменных из окружения (Environment variables)
 const {
