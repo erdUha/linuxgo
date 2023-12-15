@@ -1,9 +1,9 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "backend for site syscheckpro.xyz",
+  "description": "backend for site linuxgo.tech",
   "main": "server.js",
-  "repository": "https://github.com/erdUha/syscheckpro",
+  "repository": "https://github.com/erdUha/linuxgo.git",
   "author": "erdUha",
   "license": "MIT",
   "dependencies": {
