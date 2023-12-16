@@ -4,13 +4,14 @@ html
 		title Регистрация
 		link(rel="stylesheet" href="/style.css")
 	body
+		h2(style="color: #aa0000")= error
 		h2= message
 		h1 Регистрация
 		form(action="/signup" method="post")
 			input(type="email" name="email" placeholder="Эл. почта (Не обязательно)")
 			br
-			input(type="text" name="username" placeholder="Имя пользователя")
+			input(type="text" name="username" placeholder="Имя пользователя" required)
 			br
-			input(type="password" pattern=".{8,}" required title="8 characters minimum" name="password" placeholder="Пароль")
+			input(type="password" pattern=".{8,}" title="8 characters minimum" name="password" placeholder="Пароль required")
 			br
 			input(type="submit" value="Зарегестрироваться")

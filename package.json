@@ -1,4 +1,9 @@
 {
+	"pnpm": {
+		"overrides": {
+			"rollup": "npm:@rollup/wasm-node"
+		}
+	},
   "name": "os-vite",
   "private": true,
   "version": "0.0.0",

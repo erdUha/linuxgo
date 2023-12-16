@@ -5,7 +5,6 @@ const router = express.Router(); // Подключение роутера
 const db = require('./db'); // Подключение базы данных
 
 const bcrypt = require('bcrypt'); // Необходим для хеширования и сравнения паролей
-const Verifier = require("email-verifier"); // Для глубинной проверки эл. почты
 
 const app = express(); // Создание бекенд приложения
 app.set('view engine', 'pug'); // Присвоение шаблонизатора "pug" приложению. Стандартная папка для шаблонов "./views"
@@ -83,7 +82,7 @@ app.post('/login', async (req, res) => { // Авторизация
 			if (response.rows[0]) {
 				hashedPassword = response.rows[0].password; // Получение хешированного пароля для сверки
 			} else {
-				res.render('login', { message: "Неправильное имя пользователя или пароль" });
+				res.render('login', { error: "Неправильное имя пользователя или пароль" });
 				return false;
 			}
 			;(async () => {
@@ -92,11 +91,11 @@ app.post('/login', async (req, res) => { // Авторизация
 				if (isValidPass) {
 					res.redirect('/');
 				}	else {
-					res.render('login', { message: "Неправильное имя пользователя или пароль" });
+					res.render('login', { error: "Неправильное имя пользователя или пароль" });
 				}
 			})()
 		} catch (err) { // Поимка ошибок и вывод в консоль
-			res.render('login', { message: "Ошибка, пропробуйте позже" });
+			res.render('login', { error: "Ошибка, пропробуйте позже" });
 			console.error(err);
 			return false;
 		}
@@ -114,10 +113,12 @@ app.post('/signup', async (req, res) => { // Регистрация
 	// Проверка на случай пустых полей
 	if (username && password) {
 		// Проверка валидности эл. почты
-		if (!isValidEmail(email)) {
-			res.return("signup", { message: "Пожалуйста, введите правильную Эл. почту" });
-			return 0;
-		} else {
+		if (email) {
+			if (!isValidEmail(email)) {
+				res.render("signup", { message: "Пожалуйста, введите правильную Эл. почту" });
+				return false;
+			} else {
+			}
 		}
 		;(async () => {
 			const hashedPassword = await hashPassword(password);
@@ -134,18 +135,18 @@ app.post('/signup', async (req, res) => { // Регистрация
 				const isEmailAvailable = await db.query("SELECT * FROM users WHERE email = '" + email + "'");
 				const isUsernameAvailable = await db.query("SELECT * FROM users WHERE username = '" + username + "'");
 				if (isEmailAvailable.rows.length != 0) {
-					res.send("<h1 style='color: red'>Эл. почта уже занята, попробуйте войти в аккаунт</h1>");
+					res.render("signup", { error: "Эл. почта уже занята, попробуйте войти в аккаунт" });
 					return false;
 				}
 				if (isUsernameAvailable.rows.length != 0) {
-					res.send("<h1 style='color: red'>Имя пользователя уже занято</h1>");
+					res.render("signup", { error: "Имя пользователя уже занято" });
 					return false;
 				}
 				// Произведение PostgeSQL запроса для внедрения информации о пользователе
 				await db.query("INSERT INTO users(" + keys + ") VALUES(" + values + ")");
 				res.redirect('/');
 			} catch (err) { // Поимка ошибок и вывод в консоль
-				res.render('signup', { message: "Ошибка, пропробуйте позже" });
+				res.render('signup', { error: "Ошибка, пропробуйте позже" });
 				console.error(err);
 				return false;
 			}
@@ -161,5 +162,5 @@ app.get('*', async (req, res) => {
 const port = 3333;
 
 app.listen(port, () => { // Прослушка запросов на localhost
-  console.log('Express intro running on http://localhost:' + port);
+  console.log('Express running on http://localhost:' + port);
 });

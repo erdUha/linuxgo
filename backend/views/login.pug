@@ -4,11 +4,12 @@ html
 		title Войти в аккаунт
 		link(rel="stylesheet" href="/style.css")
 	body
+		h2(style="color: #aa0000")= error
 		h2= message
 		h1 Авторизация
 		form(action="/login" method="post")
-			input(type="text" name="username" placeholder="Имя пользователя / Эл. почта") 
+			input(type="text" name="username" placeholder="Имя пользователя / Эл. почта" required) 
 			br
-			input(type="password" name="password" placeholder="Пароль") 
+			input(type="password" name="password" placeholder="Пароль" required) 
 			br
 			input(type="submit" value="Войти")
