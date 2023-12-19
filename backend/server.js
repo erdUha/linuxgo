@@ -1,15 +1,18 @@
 const express = require('express'); // Подключение Express.js
 const session = require('express-session'); // Сессия express
-const router = express.Router(); // Подключение роутера
 
 const db = require('./db'); // Подключение базы данных
-
 const bcrypt = require('bcrypt'); // Необходим для хеширования и сравнения паролей
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const app = express(); // Создание бекенд приложения
 app.set('view engine', 'pug'); // Присвоение шаблонизатора "pug" приложению. Стандартная папка для шаблонов "./views"
 
-// Конфигурации сессии
+require('dotenv').config(); // Для импортирования переменных окружения
+const jwtKey = process.env.JWT_PRIVATE_KEY; // Импорт приватного ключа для создания и проверки JWT из переменной окружения
+
+// Конфигурации приложения
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -19,11 +22,11 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+
 app.use(express.static(__dirname + "/dist")) // Указание папки "dist" для static файлов
 app.use(express.static(__dirname + "/static")) // Указание папки "static" для static файлов
 
-
-module.exports = router;
 
 // Функция хеширования паролей
 const hashPassword = async (password, saltRounds = 14) => { // saltRounds должен быть не меньше 10 для защиты от брут-форса!
@@ -52,20 +55,52 @@ function isValidEmail(email) {
   return regex.test(email); // (true/false)
 }
 
-app.get('/login', async (req, res) => { // Вывод на экран страницы входа
-	res.render('login');
+// debug perpose only
+app.get('/setcookie', async (req, res) => {
+	res.cookie('my_cookie', 'baranina');
+	res.send('Cookies added');
+	res.end();
 });
 
-app.get('/signup', async (req, res) => { // Вывод на экран страницы регистрации
-	res.render('signup');
+app.get('/getcookie', async (req, res) => {
+  res.send(req.cookies['JWT']);
+	res.end();
 });
 
+app.get('/test', async (req, res) => {
+	res.render(__dirname + "/test/index");
+});
 
-app.post('/login', async (req, res) => { // Авторизация
+app.get('/api/islogged', async (req, res) => {
+	if (req.cookies['JWT']) {
+		const credentials = jwt.verify(req.cookies['JWT'], jwtKey);
+		const result = await db.query("SELECT username FROM users WHERE id = " + credentials.id);
+		if (result.rows && result.rows[0].username === credentials.name) {
+			res.send(true);
+		} else {
+			res.send(false);
+		}
+	} else {
+		res.send(false);
+	}
+});
+
+// Вывод на экран страницы входа
+app.get('/login', async (req, res) => { 
+	res.render(__dirname + '/views/login');
+});
+
+// Вывод на экран страницы регистрации
+app.get('/signup', async (req, res) => { 
+	res.render(__dirname + '/views/signup');
+});
+
+// Вход в аккаунт
+app.post('/login', async (req, res) => {
 	// Сбор информации из запроса
-	let username = req.body.username;
-	let password = req.body.password;
-	let isEmail = isValidEmail(username);
+	const username = req.body.username;
+	const password = req.body.password;
+	const isEmail = isValidEmail(username);
 
 	// Проверка на случай пустых полей
 	if (username && password) {
@@ -77,10 +112,10 @@ app.post('/login', async (req, res) => { // Авторизация
 			} else {
 				query = "SELECT * FROM users WHERE username = '" + username  + "'";
 			}
-			const response = await db.query(query); // Произведение PostgeSQL запроса для проверки пароля
+			const result = await db.query(query); // Произведение PostgeSQL запроса для проверки пароля
 			// Проверка на наличие пользователя в базе данных
-			if (response.rows[0]) {
-				hashedPassword = response.rows[0].password; // Получение хешированного пароля для сверки
+			if (result.rows[0]) {
+				hashedPassword = result.rows[0].password; // Получение хешированного пароля для сверки
 			} else {
 				res.render('login', { error: "Неправильное имя пользователя или пароль" });
 				return false;
@@ -89,7 +124,13 @@ app.post('/login', async (req, res) => { // Авторизация
 				const isValidPass = await comparePassword(password, hashedPassword); // Сравнение введенного пароля и хешированного
 				// Проверка входа
 				if (isValidPass) {
-					res.redirect('/');
+					// Выполнение входа
+					const lastId = result.rows[0].id;
+					let payload = { id: lastId, name: username };
+					const token = await jwt.sign(payload, jwtKey);
+					res.cookie('JWT', token, {maxAge: 86_400_000, httpOnly: true});
+					res.send('working');
+					//res.redirect('/');
 				}	else {
 					res.render('login', { error: "Неправильное имя пользователя или пароль" });
 				}
@@ -104,7 +145,8 @@ app.post('/login', async (req, res) => { // Авторизация
 	}
 });
 
-app.post('/signup', async (req, res) => { // Регистрация
+// Регистрация
+app.post('/signup', async (req, res) => { 
 	// Сбор информации из запроса
 	const username = req.body.username;
 	const password = req.body.password;
@@ -142,8 +184,12 @@ app.post('/signup', async (req, res) => { // Регистрация
 					res.render("signup", { error: "Имя пользователя уже занято" });
 					return false;
 				}
-				// Произведение PostgeSQL запроса для внедрения информации о пользователе
-				await db.query("INSERT INTO users(" + keys + ") VALUES(" + values + ")");
+				// Произведение PostgeSQL запроса для внедрения информации о пользователе и получение его id
+				const result = await db.query("INSERT INTO users (" + keys + ") VALUES(" + values + ") RETURNING id");
+				const lastId = result.rows[0].id;
+				let payload = { id: lastId, name: username };
+				const token = await jwt.sign(payload, jwtKey);
+				res.cookie('JWT', token, {maxAge: 86_400_000, httpOnly: true});
 				res.redirect('/');
 			} catch (err) { // Поимка ошибок и вывод в консоль
 				res.render('signup', { error: "Ошибка, пропробуйте позже" });
@@ -159,7 +205,7 @@ app.get('*', async (req, res) => {
   res.sendFile(__dirname + "/dist/index.html");
 });
 
-const port = 3333;
+const port = 3334;
 
 app.listen(port, () => { // Прослушка запросов на localhost
   console.log('Express running on http://localhost:' + port);

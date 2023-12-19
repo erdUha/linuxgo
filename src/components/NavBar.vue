@@ -5,6 +5,7 @@
 	<div id="navbar">
 		<router-link class="link" to="/">Main</router-link>
 		<router-link class="link" to="/about">About</router-link>
+		<router-link class="link" to="/signin">Sign In</router-link>
 		<a class="link" href="/login">Login</a>
 		<a class="link" href="/signup">Sign Up</a>
 	</div>

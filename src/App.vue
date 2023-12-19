@@ -46,11 +46,30 @@ html, body {
 </style>
 
 <script>
+import { onMounted } from 'vue'
 import NavBar from './components/NavBar.vue'
 export default {
   name: 'App',
   components: {
 		NavBar,
-  }
+  },
+	setup() {
+		onMounted( async () => {
+			const res = await fetch('/login', { 
+				method: 'POST',
+				//credentials: 'include',
+				body: {
+					'username': 'erdUha',
+					'password': 'P@rol123'
+				}
+			}).then((response) => response.json())
+				.then((json) => {
+					console.log(json);
+				})
+				.catch((err) => {
+					console.error(err);
+				})
+		})
+	}
 }
 </script>
