@@ -37,6 +37,12 @@ html, body {
 #router-wrapper {
 	display: grid; /* Для того, чтобы 2 странички с id="router" накладывались друг на друга */
 	grid-template-columns: 1fr;
+	margin-top: 60px;
+}
+@media (max-width: 48em) {
+	#router-wrapper {
+		margin-top: 4rem;
+	}
 }
 #app {
 	position: relative;
@@ -46,8 +52,11 @@ html, body {
 </style>
 
 <script>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import NavBar from './components/NavBar.vue'
+
+const isLogged = ref(false)
+
 export default {
   name: 'App',
   components: {
@@ -55,16 +64,41 @@ export default {
   },
 	setup() {
 		onMounted( async () => {
-			const res = await fetch('/login', { 
-				method: 'POST',
-				//credentials: 'include',
-				body: {
-					'username': 'erdUha',
-					'password': 'P@rol123'
-				}
+			const res = await fetch('/api/islogged', { 
+				method: 'GET',
+				credentials: 'same-origin',
 			}).then((response) => response.json())
 				.then((json) => {
-					console.log(json);
+					if (json.isLogged) {
+						isLogged.value = json.isLogged
+						if (!json.email) {
+							console.log("NO EMAIL");
+						}
+						console.log(json);
+					} else {
+						console.log('Not logged in');
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+				})
+			
+			// =================================================
+
+			const res2 = await fetch('/login', {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					'username': 'BARAAAN',
+					'password': 'baranina',
+				}),
+			}).then((response) => response.json())
+				.then((json) => {
+					console.log('login: ' + json.status);
 				})
 				.catch((err) => {
 					console.error(err);

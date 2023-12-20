@@ -17,6 +17,9 @@ dependencies:
   vue:
     specifier: ^3.3.8
     version: 3.3.12
+  vue-notification:
+    specifier: ^1.3.20
+    version: 1.3.20(vue@3.3.12)
   vue-router:
     specifier: ^4.2.5
     version: 4.2.5(vue@3.3.12)
@@ -255,8 +258,8 @@ packages:
   /@jridgewell/sourcemap-codec@1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
 
-  /@rollup/wasm-node@4.9.0:
-    resolution: {integrity: sha512-spVhSzlFgxz88VwlNU1WiWivBluzAgngKwYhRvNifzjglTqgkXdO6zmfwu2Q7MLLd+m7ol8lnWyQCq1U1xxjaw==}
+  /@rollup/wasm-node@4.9.1:
+    resolution: {integrity: sha512-awrdTJgcUC0IA5X7Zi2HJlCcdhxaSDZHaBhoNuKt+TgDPdLatbw8GKKcLpqKVEAIOwfajNCQP+taQ/EgM+090A==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -479,10 +482,18 @@ packages:
     dependencies:
       esbuild: 0.19.9
       postcss: 8.4.32
-      rollup: /@rollup/wasm-node@4.9.0
+      rollup: /@rollup/wasm-node@4.9.1
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /vue-notification@1.3.20(vue@3.3.12):
+    resolution: {integrity: sha512-vPj67Ah72p8xvtyVE8emfadqVWguOScAjt6OJDEUdcW5hW189NsqvfkOrctxHUUO9UYl9cTbIkzAEcPnHu+zBQ==}
+    peerDependencies:
+      vue: ^2.0.0
+    dependencies:
+      vue: 3.3.12
+    dev: false
 
   /vue-router@4.2.5(vue@3.3.12):
     resolution: {integrity: sha512-DIUpKcyg4+PTQKfFPX88UWhlagBEBEfJ5A8XDXRJLUnZOvcpMF8o/dnL90vpVkGaPbjvXazV/rC1qBKrZlFugw==}

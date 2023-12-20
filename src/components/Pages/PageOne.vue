@@ -4,8 +4,10 @@
 <template>
 	<div>
 		<div class="pages" id="page-one">
-			<div data-aos="zoom-out-down">
+			<div data-aos="zoom-out-down" data-aos-anchor-placement="bottom-bottom">
 				<h1>Page One</h1>
+			</div>
+			<div style="height: 50px; border: 2px black solid" data-aos="zoom-out-down" data-aos-anchor-placement="bottom-bottom">
 			</div>
 		</div>
 	</div>

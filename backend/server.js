@@ -74,14 +74,21 @@ app.get('/test', async (req, res) => {
 app.get('/api/islogged', async (req, res) => {
 	if (req.cookies['JWT']) {
 		const credentials = jwt.verify(req.cookies['JWT'], jwtKey);
-		const result = await db.query("SELECT username FROM users WHERE id = " + credentials.id);
+		const result = await db.query("SELECT * FROM users WHERE id = " + credentials.id);
 		if (result.rows && result.rows[0].username === credentials.name) {
-			res.send(true);
+			res.send({
+				isLogged: true,
+				email: result.rows[0].email
+			});
 		} else {
-			res.send(false);
+			res.send({
+				isLogged: false
+			});
 		}
 	} else {
-		res.send(false);
+		res.send({
+			isLogged: false
+		});
 	}
 });
 
@@ -117,7 +124,9 @@ app.post('/login', async (req, res) => {
 			if (result.rows[0]) {
 				hashedPassword = result.rows[0].password; // Получение хешированного пароля для сверки
 			} else {
-				res.render('login', { error: "Неправильное имя пользователя или пароль" });
+				res.send({ 
+					status: 404
+				});
 				return false;
 			}
 			;(async () => {
@@ -128,20 +137,34 @@ app.post('/login', async (req, res) => {
 					const lastId = result.rows[0].id;
 					let payload = { id: lastId, name: username };
 					const token = await jwt.sign(payload, jwtKey);
-					res.cookie('JWT', token, {maxAge: 86_400_000, httpOnly: true});
-					res.send('working');
+					res.cookie('JWT', token, {
+						maxAge: 86_400_000, 
+						httpOnly: true,
+						sameSite: 'lax'
+					});
+					res.send({
+						status: 200
+					});
 					//res.redirect('/');
 				}	else {
-					res.render('login', { error: "Неправильное имя пользователя или пароль" });
+					res.send({ 
+						status: 404
+					});
+					return false;
 				}
 			})()
 		} catch (err) { // Поимка ошибок и вывод в консоль
-			res.render('login', { error: "Ошибка, пропробуйте позже" });
+			res.send({ 
+				status: 403
+			});
 			console.error(err);
 			return false;
 		}
 	} else {
-		res.render('login', { message: "Пожалуйса, заполните поля" });
+		res.send({ 
+			status: 204
+		});
+		return false;
 	}
 });
 
@@ -189,7 +212,11 @@ app.post('/signup', async (req, res) => {
 				const lastId = result.rows[0].id;
 				let payload = { id: lastId, name: username };
 				const token = await jwt.sign(payload, jwtKey);
-				res.cookie('JWT', token, {maxAge: 86_400_000, httpOnly: true});
+				res.cookie('JWT', token, {
+					maxAge: 86_400_000, 
+					httpOnly: true,
+					sameSite: 'lax'
+				});
 				res.redirect('/');
 			} catch (err) { // Поимка ошибок и вывод в консоль
 				res.render('signup', { error: "Ошибка, пропробуйте позже" });
