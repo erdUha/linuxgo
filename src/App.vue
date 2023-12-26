@@ -12,23 +12,16 @@
 	</div>
 </template>
 
-<style src="./style.css"></style>
+<style lang="scss" src="./styles/app.scss"></style>
 <style src="./transitions.css"></style>
 
 <style>
 html, body {
 	padding: 0; margin: 0;
 }
-#page-two {
-	background-color: yellow;
-}
-#page-one {
-	background-color: cyan;
-}
 .pages {
-	padding-top: 50px;
-	width: 100%;
-	height: 100vh;
+	padding-top: 550px;
+	width: 100%; height: 2000px;
 }
 #router {
 	grid-row-start: 1;
@@ -37,11 +30,11 @@ html, body {
 #router-wrapper {
 	display: grid; /* Для того, чтобы 2 странички с id="router" накладывались друг на друга */
 	grid-template-columns: 1fr;
-	margin-top: 60px;
+	margin-top: 3rem;
 }
 @media (max-width: 48em) {
 	#router-wrapper {
-		margin-top: 4rem;
+		margin-top: 3.25rem;
 	}
 }
 #app {
@@ -55,7 +48,29 @@ html, body {
 import { onMounted, ref } from 'vue'
 import NavBar from './components/NavBar.vue'
 
-const isLogged = ref(false)
+window.sessionStorage.setItem('isLogged', false);
+
+const checkIfLogged = async () => {
+	const res = await fetch('/api/islogged', { 
+		method: 'GET',
+		credentials: 'same-origin',
+	}).then((response) => response.json())
+		.then((json) => {
+			if (json.isLogged) {
+				window.sessionStorage.setItem('isLogged', json.isLogged);
+				window.sessionStorage.setItem('email', json.email);
+				if (!json.email) {
+					console.log("NO EMAIL");
+				}
+				console.log(json);
+			} else {
+				console.log('Not logged in');
+			}
+		})
+		.catch((err) => {
+			//console.error(err);
+		})
+}
 
 export default {
   name: 'App',
@@ -63,46 +78,8 @@ export default {
 		NavBar,
   },
 	setup() {
-		onMounted( async () => {
-			const res = await fetch('/api/islogged', { 
-				method: 'GET',
-				credentials: 'same-origin',
-			}).then((response) => response.json())
-				.then((json) => {
-					if (json.isLogged) {
-						isLogged.value = json.isLogged
-						if (!json.email) {
-							console.log("NO EMAIL");
-						}
-						console.log(json);
-					} else {
-						console.log('Not logged in');
-					}
-				})
-				.catch((err) => {
-					console.error(err);
-				})
-			
-			// =================================================
-
-			const res2 = await fetch('/login', {
-				method: 'POST',
-				credentials: 'same-origin',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					'username': 'BARAAAN',
-					'password': 'baranina',
-				}),
-			}).then((response) => response.json())
-				.then((json) => {
-					console.log('login: ' + json.status);
-				})
-				.catch((err) => {
-					console.error(err);
-				})
+		onMounted(() => {
+			//$checkIsLogged();
 		})
 	}
 }
