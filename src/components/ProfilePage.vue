@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps, reactive, ref } from 'vue'
+import FormData from 'form-data'
 
 </script>
 
@@ -85,6 +86,7 @@ import { defineProps, reactive, ref } from 'vue'
 <script>
 import { ref } from 'vue'
 import { CircleStencil,  Cropper } from 'vue-advanced-cropper'
+import axios from 'axios'
 import 'vue-advanced-cropper/dist/style.css'
 
 const isCropperOpen = ref(false)
@@ -176,17 +178,19 @@ export default {
 			const { canvas } = this.$refs.cropper.getResult();
 			if (canvas) {
 				const form = new FormData();
-				canvas.toBlob(blob => {
-					form.append('file', blob);
-					console.log(blob)
-					// You can use axios, superagent and other libraries instead here
-					fetch('/api/setpfp', {
-						method: 'POST',
-						body: {
-							blob: blob,
-						},
-					});
-				}, 'image/jpeg');
+				const blob = new Blob
+				form.append('file', blob)
+				const res = fetch('/api/setpfp', {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						'hey': blob
+					}),
+				});
 			}
 		},
 	},
