@@ -12,16 +12,16 @@ function redirect() {
 				<span class="small">Создайте сайт вашей мечты!</span>
 			</h1>
 		</div>
-		<div id="section-1">
+		<div id="section-1" data-aos-offset="-100" data-aos="zoom-out-right" data-aos-anchor-placement="bottom-bottom">
 			<h3>Научитесь понимать и реализовывать Back-End часть для <strong>вашего</strong> сайта</h3>
 		</div>
 		<div id="frameworks">
-			<h3>Получите доступ к справочному материалу для самых прогрессивных фреймворков</h3>
-			<img @click="scrollToTop(); router.push('/about')" width="200px" src="../../assets/nodejs.png" />
-			<img width="200px" src="../../assets/django.png" />
-			<img width="200px" src="../../assets/flask.png" />
+			<h3>Справочный материал для самых прогрессивных фреймворков</h3>
+			<img class="noselect" @click="scrollToTop(); router.push('/about')" width="200px" src="../../assets/nodejs.png" />
+			<img class="noselect" width="200px" src="../../assets/django.png" />
+			<img class="noselect" width="200px" src="../../assets/flask.png" />
 		</div>
-		<div id="section-2">
+		<div id="section-2" data-aos="zoom-out-left" data-aos-anchor-placement="bottom-bottom">
 			<h3>Решайте интерактивные задачи по <strong>базам данных</strong></h3>
 		</div>
 	</div>
@@ -44,7 +44,7 @@ strong {
 	margin-bottom: 2rem;
 }
 #frameworks {
-	background-color: #222;
+	background-color: #201f21;
 	padding: 2.5rem 0;
 }
 #section-1 h3, #section-2 h3 {
