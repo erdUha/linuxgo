@@ -96,28 +96,7 @@ app.get('/api/islogged', async (req, res) => {
 	}
 });
 
-app.post('/api/setpfp', async (req, res) => {
-	var body = Buffer.from([]);
-	req.on('data', function (data) {
-		body = Buffer.concat([body, data]);
-		if (body.length > 1e7) {
-			console.log("POSTED data too large!")
-			req.connection.destroy();
-		}
-	});
-	req.on('end', function () {
-			var pathname = "test.png";
-			fs.writeFileSync(pathname, body, {flag: "w"});
-			res.writeHead(200, {
-						'Content-Type': 'text/plain',
-						'Access-Control-Allow-Origin' : '*',
-						// note: I had to add these because of the OPTIONS request
-						'Access-Control-Allow-Headers' : 'Content-Type',
-						'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,OPTIONS'
-			});
-			res.end("got it")
-	});
-})
+app.post('api/get', async ());
 
 // Вход в аккаунт
 app.post('/api/login', async (req, res) => {

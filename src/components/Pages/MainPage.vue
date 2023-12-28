@@ -1,33 +1,88 @@
 <script setup>
 import { router } from '../../router.js'
-function redirect() {
-	router.push('about')
-}
+import '../../scroll-timeline.js'
+
+
+
 </script>
 <template>
 	<div>
 		<div id="main-page">
-			<h1 id="main-text">
+			<h1 class="ease-cool" data-aos-delay="250" data-aos-duration="800" data-aos="fade-left" id="main-text">
 				<strong>LinuxGO</strong><br /><br />
 				<span class="small">Создайте сайт вашей мечты!</span>
 			</h1>
 		</div>
-		<div id="section-1" data-aos-offset="-100" data-aos="zoom-out-right" data-aos-anchor-placement="bottom-bottom">
+		<div class="ease-cool no-delay" id="section-1" data-aos-delay="150" data-aos="zoom-out-right" data-aos-anchor-placement="bottom-bottom">
 			<h3>Научитесь понимать и реализовывать Back-End часть для <strong>вашего</strong> сайта</h3>
 		</div>
 		<div id="frameworks">
 			<h3>Справочный материал для самых прогрессивных фреймворков</h3>
-			<img class="noselect" @click="scrollToTop(); router.push('/about')" width="200px" src="../../assets/nodejs.png" />
-			<img class="noselect" width="200px" src="../../assets/django.png" />
-			<img class="noselect" width="200px" src="../../assets/flask.png" />
+			<img loading="lazy" data-aos="zoom-out-right" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" @click="scrollToTop(); router.push('/about')" width="200px" src="../../assets/nodejs.png" />
+			<img loading="lazy" data-aos-delay="200" data-aos="zoom-out-up" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" width="200px" src="../../assets/django.png" />
+			<img loading="lazy" data-aos-delay="350" data-aos="zoom-out-left" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" width="200px" src="../../assets/flask.png" />
 		</div>
-		<div id="section-2" data-aos="zoom-out-left" data-aos-anchor-placement="bottom-bottom">
+		<div id="section-2" data-aos-offset="150" data-aos="zoom-out-left" data-aos-anchor-placement="bottom-bottom">
 			<h3>Решайте интерактивные задачи по <strong>базам данных</strong></h3>
+		</div>
+		<img loading="lazy" data-aos-offset="300" data-aos-duration="1000" data-aos="flip-down" id="pg-anim" src="../../assets/posgres-test.webp" />
+		<div data-aos="fade-up" data-aos-anchor-placement="center-bottom" id="section-3">
+			<div>
+				<h3>Давайте начнем!</h3>
+				<button>Введение</button>
+			</div>
 		</div>
 	</div>
 </template>
 
 <style scoped>
+#section-3 button:hover {
+	background-color: #8f68d1;
+	color: black;
+}
+#section-3 button {
+	border: none;
+	border-radius: 3vw;
+	padding: 0.5rem 2rem;
+	margin: 2.5vw 10vw;
+	height: 10vw;
+	font-size: 3vw;
+	transition: 0.05s ease-in-out;
+}
+#section-3 h3 {
+	width: 50vw;
+	position: relative;
+	text-align: left;
+	margin-left: 8vw;
+	margin-top: 3.5vw;
+	font-size: 5vw;
+}
+#section-3 div {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: 100%;
+	height: 15vw;
+	top: 50vw;
+	background-color: rgba(12,11,15,0.5);
+	box-shadow: 0 0 13vw rgba(12,11,15,1);
+}
+#section-3 {
+	width: 100vw;
+	height: 80vw;
+	margin-top: 5rem;
+	box-shadow: inset 0 0px 15vw rgba(0,0,0,0.9);
+	background-image: url('../../assets/coding.jpeg');
+	background-size: cover;
+}
+#pg-anim {
+	width: min(80%, 1083px);
+}
+@media (max-width: 32em) {
+	#pg-anim {
+		width: 95%;
+	}
+}
 strong {
 	font-weight: 800;
 }
@@ -93,6 +148,9 @@ strong {
 	height: calc(100vh - 3rem);
 }
 @media (min-width: 64em) {
+	#pg-anim {
+		margin-top: 3rem;
+	}
 	#main-text {
 		font-size: 4rem;
 		padding: 0 10% 0 10%;
@@ -119,12 +177,80 @@ strong {
 </style>
 
 <script>
+import { onMounted } from 'vue'
+
+function setAosDelay() {
+	var isSmall = false
+	if (document.body.clientWidth / window.getComputedStyle(document.body).getPropertyValue('font-size').replace(/\D/g, "") < 48) {
+		isSmall = true
+	}
+	const noDelay = document.getElementsByClassName('no-delay')
+	console.log(noDelay)
+	Array.from(noDelay).forEach((element) => {
+		if (isSmall) {
+			if (element.dataset.aosDelay) {
+				element.dataset.aosDelayDesktop = element.dataset.aosDelay
+				element.dataset.aosDelay = "0"
+			}
+			element.dataset.aosDesktop = element.dataset.aos
+			element.dataset.aos = "zoom-out"
+		} else {
+			if (element.dataset.aosDelayDesktop) {
+				element.dataset.aosDelay = element.dataset.aosDelayDesktop
+			}
+			if (element.dataset.aosDesktop) {
+				element.dataset.aos = element.dataset.aosDesktop
+			}
+		}
+	})
+}
 export default {
 	name: 'MainPage',
+	setup() {
+		onMounted(() => {
+			console.log("loaded")
+			window.addEventListener('resize', function () {
+				setAosDelay()
+			})
+			setAosDelay()
+			const imgAnim = document.getElementById('pg-anim')
+			const imgOffsetTop = imgAnim.offsetTop
+			const imgHeight = imgAnim.clientHeight
+			window.addEventListener('scroll', function () {
+				const imgAnim = document.getElementById('pg-anim')
+				const imgOffsetTop = imgAnim.offsetTop
+				const imgHeight = imgAnim.clientHeight
+			})
+			try {
+				imgAnim.animate(
+					{
+						transform: ["perspective(1000px) rotateX(90deg) scale(0.9)", "perspective(1000px) rotate(0) scale(1)"],
+						opacity: [".5", "1"],
+					},
+					{
+						duration: 1,
+						fill: "both",
+						timeline: new ScrollTimeline({
+							scrollSource: document.documentElement,
+							timeRange: 1,
+							fill: "both",
+							scrollOffsets: [
+								{ target: imgAnim, edge: "start", threshold: 1 },
+								{ target: imgAnim, edge: "end", threshold: 1 },
+								//CSS.px(imgOffsetTop + imgHeight - window.innerHeight),
+								//CSS.px(imgOffsetTop)
+							],
+						})
+					}
+				)
+			} catch (err) {
+			}
+		})
+	},
 	methods: {
 		scrollToTop() {
 			window.scrollTo({ top: 0, behavior: 'smooth' })
-		}
+		},
 	}
 }
 </script>

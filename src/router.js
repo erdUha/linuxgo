@@ -7,7 +7,7 @@ import PageTwo from './components/Pages/PageTwo.vue'
 import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import SqlTutorial from './components/SqlTutorial.vue'
-import ProfilePage from './components/ProfilePage.vue'
+import SupportComp from './components/SupportComp.vue'
 
 console.log(window.location.href);
 export const router = createRouter({
@@ -35,7 +35,7 @@ export const router = createRouter({
 			path: '/signup-vue',
 			name: 'signup-vue',
 			component: SignUp, 
-			meta: { transition: 'slide-right' }
+			meta: { transition: 'slide-left' }
 		},
 		{
 			path: '/sql-tutorial',
@@ -44,10 +44,10 @@ export const router = createRouter({
 			meta: { transition: 'fade' }
 		},
 		{
-			path: '/profile',
-			name: 'profile-page',
-			component: ProfilePage, 
-			meta: { transition: 'fade' }
+			path: '/support',
+			name: 'support',
+			component: SupportComp, 
+			meta: { transition: 'slide-right' }
 		},
 	]
 })

@@ -66,7 +66,6 @@ onMounted(() => {
 			<router-link class="noselect link" to="/">Главная</router-link>
 			<router-link class="noselect link" to="/about">Базы данных</router-link>
 			<router-link class="noselect link" to="/sql-tutorial">MySQL Туториал</router-link>
-			<router-link class="noselect link" to="/profile">MySQL Туториал</router-link>
 		</div>
 		<div v-if="!isLogged" id="right-buttons">
 			<router-link class="noselect link" to="/signin">Войти</router-link>
@@ -251,7 +250,7 @@ onMounted(() => {
 	place-items: center;
 	width: 100%;
 	height: 3rem;
-	background: linear-gradient(#403f52, #484158);
+	background: linear-gradient(#3d3c4e, #423e53);
 }
 @media screen and (max-width: 48em) {
 	#desktop-links {
