@@ -56,16 +56,16 @@ onMounted(() => {
 				<div></div>
 			</div>
 			<div id="mobile-menu">
-				<router-link @click="exitMenu()" class="noselect m-link" to="/">Main</router-link>
-				<router-link @click="exitMenu()" class="noselect m-link" to="/about">About</router-link>
-				<router-link @click="exitMenu()" class="noselect m-link" to="/sql-tutorial">MySQL Туториал</router-link>
+				<router-link @click="exitMenu()" class="noselect m-link" to="/">Главная</router-link>
+				<router-link @click="exitMenu()" class="noselect m-link" to="/articles">Статьи</router-link>
+				<router-link @click="exitMenu()" class="noselect m-link" to="/sql-tutorial">SQL Туториал</router-link>
 			</div>
 		</div>
 		<div id="icon"></div>
 		<div id="desktop-links">
 			<router-link class="noselect link" to="/">Главная</router-link>
-			<router-link class="noselect link" to="/about">Базы данных</router-link>
-			<router-link class="noselect link" to="/sql-tutorial">MySQL Туториал</router-link>
+			<router-link class="noselect link" to="/articles">Статьи</router-link>
+			<router-link class="noselect link" to="/sql-tutorial">SQL Туториал</router-link>
 		</div>
 		<div v-if="!isLogged" id="right-buttons">
 			<router-link class="noselect link" to="/signin">Войти</router-link>

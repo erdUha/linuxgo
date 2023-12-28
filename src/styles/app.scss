@@ -1,4 +1,7 @@
 @import '@sweetalert2/theme-dark/dark.scss';
+html {
+  scroll-behavior: smooth;
+}
 :root {
 	background-color: #302e33;
   font-family: Manrope, Inter, SegoeUI, system-ui, Avenir, Helvetica, Arial, sans-serif;

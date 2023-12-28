@@ -1,7 +1,39 @@
 <script setup>
+import { onMounted } from 'vue'
 import { router } from '../../router.js'
 import '../../scroll-timeline.js'
 
+function setAosDelay() {
+	var isSmall = false
+	if (document.body.clientWidth / window.getComputedStyle(document.body).getPropertyValue('font-size').replace(/\D/g, "") < 48) {
+		isSmall = true
+	}
+	const noDelay = document.getElementsByClassName('no-delay')
+	Array.from(noDelay).forEach((element) => {
+		if (isSmall) {
+			if (element.dataset.aosDelay) {
+				element.dataset.aosDelayDesktop = element.dataset.aosDelay
+				element.dataset.aosDelay = "0"
+			}
+			element.dataset.aosDesktop = element.dataset.aos
+			element.dataset.aos = "zoom-out"
+		} else {
+			if (element.dataset.aosDelayDesktop) {
+				element.dataset.aosDelay = element.dataset.aosDelayDesktop
+			}
+			if (element.dataset.aosDesktop) {
+				element.dataset.aos = element.dataset.aosDesktop
+			}
+		}
+	})
+}
+
+onMounted(function () {
+	window.addEventListener('resize', function () {
+		setAosDelay()
+	})
+	setAosDelay()
+})
 
 
 </script>
@@ -17,19 +49,19 @@ import '../../scroll-timeline.js'
 			<h3>Научитесь понимать и реализовывать Back-End часть для <strong>вашего</strong> сайта</h3>
 		</div>
 		<div id="frameworks">
-			<h3>Справочный материал для самых прогрессивных фреймворков</h3>
+			<h3 class="ease-cool no-delay" data-aos="zoom-out" data-aos-delay="350" data-aos-anchor-placement="bottom-bottom">Справочный материал для самых прогрессивных фреймворков</h3>
 			<img loading="lazy" data-aos="zoom-out-right" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" @click="scrollToTop(); router.push('/about')" width="200px" src="../../assets/nodejs.png" />
 			<img loading="lazy" data-aos-delay="200" data-aos="zoom-out-up" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" width="200px" src="../../assets/django.png" />
 			<img loading="lazy" data-aos-delay="350" data-aos="zoom-out-left" data-aos-offset="150" data-aos-anchor-placement="bottom-bottom" class="ease-cool noselect no-delay" width="200px" src="../../assets/flask.png" />
 		</div>
-		<div id="section-2" data-aos-offset="150" data-aos="zoom-out-left" data-aos-anchor-placement="bottom-bottom">
+		<div class="ease-cool no-delay" id="section-2" data-aos-offset="150" data-aos="zoom-out-left" data-aos-anchor-placement="bottom-bottom">
 			<h3>Решайте интерактивные задачи по <strong>базам данных</strong></h3>
 		</div>
 		<img loading="lazy" data-aos-offset="300" data-aos-duration="1000" data-aos="flip-down" id="pg-anim" src="../../assets/posgres-test.webp" />
 		<div data-aos="fade-up" data-aos-anchor-placement="center-bottom" id="section-3">
 			<div>
 				<h3>Давайте начнем!</h3>
-				<button>Введение</button>
+				<button @click="redirect()">Введение</button>
 			</div>
 		</div>
 	</div>
@@ -177,80 +209,20 @@ strong {
 </style>
 
 <script>
-import { onMounted } from 'vue'
+import { router } from '../../router.js'
 
-function setAosDelay() {
-	var isSmall = false
-	if (document.body.clientWidth / window.getComputedStyle(document.body).getPropertyValue('font-size').replace(/\D/g, "") < 48) {
-		isSmall = true
-	}
-	const noDelay = document.getElementsByClassName('no-delay')
-	console.log(noDelay)
-	Array.from(noDelay).forEach((element) => {
-		if (isSmall) {
-			if (element.dataset.aosDelay) {
-				element.dataset.aosDelayDesktop = element.dataset.aosDelay
-				element.dataset.aosDelay = "0"
-			}
-			element.dataset.aosDesktop = element.dataset.aos
-			element.dataset.aos = "zoom-out"
-		} else {
-			if (element.dataset.aosDelayDesktop) {
-				element.dataset.aosDelay = element.dataset.aosDelayDesktop
-			}
-			if (element.dataset.aosDesktop) {
-				element.dataset.aos = element.dataset.aosDesktop
-			}
-		}
-	})
-}
+
 export default {
 	name: 'MainPage',
-	setup() {
-		onMounted(() => {
-			console.log("loaded")
-			window.addEventListener('resize', function () {
-				setAosDelay()
-			})
-			setAosDelay()
-			const imgAnim = document.getElementById('pg-anim')
-			const imgOffsetTop = imgAnim.offsetTop
-			const imgHeight = imgAnim.clientHeight
-			window.addEventListener('scroll', function () {
-				const imgAnim = document.getElementById('pg-anim')
-				const imgOffsetTop = imgAnim.offsetTop
-				const imgHeight = imgAnim.clientHeight
-			})
-			try {
-				imgAnim.animate(
-					{
-						transform: ["perspective(1000px) rotateX(90deg) scale(0.9)", "perspective(1000px) rotate(0) scale(1)"],
-						opacity: [".5", "1"],
-					},
-					{
-						duration: 1,
-						fill: "both",
-						timeline: new ScrollTimeline({
-							scrollSource: document.documentElement,
-							timeRange: 1,
-							fill: "both",
-							scrollOffsets: [
-								{ target: imgAnim, edge: "start", threshold: 1 },
-								{ target: imgAnim, edge: "end", threshold: 1 },
-								//CSS.px(imgOffsetTop + imgHeight - window.innerHeight),
-								//CSS.px(imgOffsetTop)
-							],
-						})
-					}
-				)
-			} catch (err) {
-			}
-		})
-	},
 	methods: {
 		scrollToTop() {
 			window.scrollTo({ top: 0, behavior: 'smooth' })
 		},
-	}
+		redirect() {
+			router.push('/articles')
+		}
+	},
+	setup() {
+	},
 }
 </script>

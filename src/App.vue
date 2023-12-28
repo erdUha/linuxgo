@@ -56,28 +56,6 @@ import FooterComp from './components/FooterComp.vue'
 
 window.sessionStorage.setItem('isLogged', false);
 
-const checkIfLogged = async () => {
-	const res = await fetch('/api/islogged', { 
-		method: 'GET',
-		credentials: 'same-origin',
-	}).then((response) => response.json())
-		.then((json) => {
-			if (json.isLogged) {
-				window.sessionStorage.setItem('isLogged', json.isLogged);
-				window.sessionStorage.setItem('email', json.email);
-				if (!json.email) {
-					console.log("NO EMAIL");
-				}
-				console.log(json);
-			} else {
-				console.log('Not logged in');
-			}
-		})
-		.catch((err) => {
-			//console.error(err);
-		})
-}
-
 export default {
   name: 'App',
   components: {
@@ -86,7 +64,6 @@ export default {
   },
 	setup() {
 		onMounted(() => {
-			//$checkIsLogged();
 		})
 	},
 	data() {

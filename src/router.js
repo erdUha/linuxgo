@@ -8,6 +8,8 @@ import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import SqlTutorial from './components/SqlTutorial.vue'
 import SupportComp from './components/SupportComp.vue'
+import MainArticles from './components/Pages/Articles/MainArticles.vue'
+import FirstNodejs from './components/Pages/Articles/FirstNodejs.vue'
 
 console.log(window.location.href);
 export const router = createRouter({
@@ -47,6 +49,18 @@ export const router = createRouter({
 			path: '/support',
 			name: 'support',
 			component: SupportComp, 
+			meta: { transition: 'slide-right' }
+		},
+		{
+			path: '/articles',
+			name: 'articles',
+			component: MainArticles, 
+			meta: { transition: 'fade' }
+		},
+		{
+			path: '/first-nodejs',
+			name: 'First Nodejs',
+			component: FirstNodejs, 
 			meta: { transition: 'slide-right' }
 		},
 	]
