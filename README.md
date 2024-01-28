@@ -4,7 +4,7 @@ This project was made using Vue 3 with Vite on Front-End and ExpressJS on Back-E
 
 ## Prerequirements
 
-- Install [pnpm] (https://www.npmjs.com/package/pnpm) and postgreSQL on your system
+- Install [pnpm](https://www.npmjs.com/package/pnpm) and postgreSQL on your system
 
 - Add environment variables to your system based on `backend/db.js` and `backend/server.js`
 
