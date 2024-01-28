@@ -13,9 +13,12 @@
 <style scoped>
 .article-item-link {
 }
+.article-item *:hover {
+	text-decoration: none;
+}
 .article-item * {
 	color: #fff;
-	text-decoration: none;
+	text-decoration: underline;
 	font-size: 1.5rem;
 }
 .article-item {

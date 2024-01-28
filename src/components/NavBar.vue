@@ -59,6 +59,7 @@ onMounted(() => {
 				<router-link @click="exitMenu()" class="noselect m-link" to="/">Главная</router-link>
 				<router-link @click="exitMenu()" class="noselect m-link" to="/articles">Статьи</router-link>
 				<router-link @click="exitMenu()" class="noselect m-link" to="/sql-tutorial">SQL Туториал</router-link>
+				<router-link @click="exitMenu()" class="noselect m-link" to="/support">Об. Связь</router-link>
 			</div>
 		</div>
 		<div id="icon"></div>
@@ -66,13 +67,13 @@ onMounted(() => {
 			<router-link class="noselect link" to="/">Главная</router-link>
 			<router-link class="noselect link" to="/articles">Статьи</router-link>
 			<router-link class="noselect link" to="/sql-tutorial">SQL Туториал</router-link>
+			<router-link class="noselect link" to="/support">Об. Связь</router-link>
 		</div>
 		<div v-if="!isLogged" id="right-buttons">
 			<router-link class="noselect link" to="/signin">Войти</router-link>
-			<router-link class="noselect link" to="/signup-vue">Регистрация</router-link>
+			<router-link class="noselect link" to="/signup">Регистрация</router-link>
 		</div>
 		<div v-else id="right-profile">
-			<h4>bruh</h4>
 		</div>
 	</div>
 </template>
@@ -221,7 +222,7 @@ onMounted(() => {
 	/*min-width: 8rem;*/
 	background-color: #444;
 	transition: 0.2s cubic-bezier(.22,.07,.56,1.01);
-	grid-template-rows: max-content max-content; 
+	grid-template-rows: max-content max-content max-content max-content; 
 }
 @media (max-width: 32em) {
 	#right-buttons > * {

@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted } from 'vue'
 import { router } from '../../router.js'
-import '../../scroll-timeline.js'
 
 function setAosDelay() {
 	var isSmall = false

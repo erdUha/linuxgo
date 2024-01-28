@@ -7,10 +7,14 @@ const bcrypt = require('bcrypt'); // Необходим для хеширова�
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
+const nodemailer = require('nodemailer');
 const app = express(); // Создание бекенд приложения
 
 require('dotenv').config(); // Для импортирования переменных окружения
 const jwtKey = process.env.JWT_PRIVATE_KEY; // Импорт приватного ключа для создания и проверки JWT из переменной окружения
+const emailPass = process.env.EMAIL_PASSWORD;
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 // Конфигурации приложения
 app.use(session({
@@ -27,7 +31,22 @@ app.use(cookieParser());
 app.use(express.static(__dirname + "/dist")) // Указание папки "dist" для static файлов
 
 app.get("/preza", async (req, res) => {
-	res.redirect('https://bestsiteever.com/');
+	res.redirect('https://www.canva.com/design/DAF4OyySu04/6dzQLvdpbfsKzZELeag3VA/edit?utm_content=DAF4OyySu04&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton');
+});
+
+app.get("/nuraly", async (req, res) => {
+	res.redirect('');
+});
+
+app.get('/api/get-support', async (req, res) => {
+	try {
+		const response = await db.query("SELECT * FROM support");
+		res.send({
+			response: response.rows
+		});
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 // Функция хеширования паролей
@@ -61,6 +80,7 @@ function isValidEmail(email) {
 function isValidUsername(username) {
     return /^[0-9a-zA-Z_.-]+$/.test(username);
 }
+
 
 // Проверка JWT токена на валидность
 app.get('/api/islogged', async (req, res) => {
@@ -96,7 +116,24 @@ app.get('/api/islogged', async (req, res) => {
 	}
 });
 
-app.post('api/get', async ());
+app.get('/api/get-support', async (req, res) => {
+	try {
+		const response = await db.query("SELECT * FROM support");
+		res.send(response);
+	} catch (err) {
+		console.log(err);
+	}
+});
+app.post('/api/send-email', async (req, res) => {
+	const name = req.body.name;
+	const email = req.body.email;
+	const text = req.body.text;
+	try {
+			const response = await db.query("INSERT INTO support (name, email, text) VALUES('" + name + "', '" + email + "', '" + text + "')")
+	} catch (err) {
+		console.log(err);
+	}
+});
 
 // Вход в аккаунт
 app.post('/api/login', async (req, res) => {
@@ -114,6 +151,14 @@ app.post('/api/login', async (req, res) => {
 				query = "SELECT * FROM users WHERE email = '" + username  + "'";
 			} else {
 				query = "SELECT * FROM users WHERE username = '" + username  + "'";
+app.get('/api/get-support', async (req, res) => {
+	try {
+		const response = await db.query("SELECT * FROM support");
+		res.send(response);
+	} catch (err) {
+		console.log(err);
+	}
+});
 			}
 			const result = await db.query(query); // Произведение PostgeSQL запроса для проверки пароля
 			// Проверка на наличие пользователя в базе данных
@@ -260,6 +305,7 @@ app.post('/api/signup', async (req, res) => {
 app.get('*', async (req, res) => { 
   res.sendFile(__dirname + "/dist/index.html");
 });
+
 
 const port = 3333;
 

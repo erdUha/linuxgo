@@ -2,14 +2,13 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from './components/Pages/MainPage.vue'
-import PageOne from './components/Pages/PageOne.vue'
-import PageTwo from './components/Pages/PageTwo.vue'
 import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import SqlTutorial from './components/SqlTutorial.vue'
 import SupportComp from './components/SupportComp.vue'
 import MainArticles from './components/Pages/Articles/MainArticles.vue'
 import FirstNodejs from './components/Pages/Articles/FirstNodejs.vue'
+import GetSupport from './components/GetSupport.vue'
 
 console.log(window.location.href);
 export const router = createRouter({
@@ -22,20 +21,14 @@ export const router = createRouter({
 			meta: { transition: 'fade' },
 		},
 		{
-			path: '/about',
-			name: 'about',
-			component: PageTwo,
-			meta: { transition: 'fade' },
-		},
-		{
 			path: '/signin',
 			name: 'signin',
 			component: LogIn,
 			meta: { transition: 'slide-right' }
 		},
 		{
-			path: '/signup-vue',
-			name: 'signup-vue',
+			path: '/signup',
+			name: 'signup',
 			component: SignUp, 
 			meta: { transition: 'slide-left' }
 		},
@@ -61,6 +54,12 @@ export const router = createRouter({
 			path: '/first-nodejs',
 			name: 'First Nodejs',
 			component: FirstNodejs, 
+			meta: { transition: 'slide-right' }
+		},
+		{
+			path: '/get-support',
+			name: 'get support',
+			component: GetSupport, 
 			meta: { transition: 'slide-right' }
 		},
 	]

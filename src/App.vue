@@ -33,6 +33,7 @@ html, body {
 	min-height: 100vh;
 }
 #router-wrapper {
+	min-height: 100vh;
 	display: grid; /* Для того, чтобы 2 странички с id="router" накладывались друг на друга */
 	grid-template-columns: 1fr;
 	margin-top: 3rem;

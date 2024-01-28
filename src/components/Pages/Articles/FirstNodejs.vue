@@ -8,8 +8,11 @@
 					<li><a @click="closeContents" href="#whatis">Что такое Express JS</a></li>
 					<li><a @click="closeContents" href="#installation">Установка Express JS</a></li>
 					<li><a @click="closeContents" href="#shablon">Механизмы шаблонов Express JS</a></li>
+					<li><a @click="closeContents" href="#middleware">Промежуточное программное обеспечение Express JS</a></li>
+					<li><a @click="closeContents" href="#conclusion">Вывод</a></li>
 				</ul>
 			</div>
+			<img class="contents-icon" src="../../../assets/bitmap.svg">
 			<div class="article-text">
 				<h2>Первое приложение на Express JS</h2>
 				<h3 id="whatis">Что такое Express JS</h3>
@@ -33,7 +36,7 @@
 					<li>
 						Перейдите в каталог, в котором вы хотите разместить свое приложение. Пример приложения в этом руководстве находится в домашнем каталоге текущего пользователя. Затем используйте генератор приложений Express, чтобы создать скелет приложения.
 					</li>
-					<div class="code">
+					<div class="code">S
 						cd ~ <br>
 						npx express-generator --view=pug example-app
 					</div>
@@ -73,7 +76,9 @@
 
 							</li>
 						</ul>
-						Вас должно приветствовать сообщение «Добро пожаловать в Express».
+						<p>
+							Вас должно приветствовать сообщение «Добро пожаловать в Express».
+						</p>
 					</li>
 				</ol>
 				<h3 id="shablon">Механизмы шаблонов Express JS</h3>
@@ -112,85 +117,80 @@ block content<br>
   h1= title<br>
   p Welcome to #{title}<br>
 				</div>
+				<h3 id="middleware">Промежуточное программное обеспечение Express JS</h3>
+				<p>
+				Функции промежуточного программного обеспечения Express JS выполняют задачи в рамках цикла запрос-ответ приложения. Они получают объекты запроса и ответа приложения, а также функцию next приложения для продолжения цикла.
+
+Файлы app.js и ~/example-app/routes/index.js, приведенные выше, используют функции промежуточного программного обеспечения для маршрутизации трафика и обслуживания контента. Примеры из этих файлов используются ниже для дальнейшего изучения того, как работают функции промежуточного программного обеспечения Express JS.
+
+Функции промежуточного программного обеспечения бывают двух уровней:
+				</p>
+				<ul>
+					<li>
+					Функции промежуточного программного обеспечения уровня приложения выполняются объектом приложения и обычно используются для операций, которые применяются глобально. Объект приложения обычно создается в начале основного файла приложения (в данном примере app.js) с помощью такой команды, как var app = express().
+					</li>
+					<li>
+     Промежуточное ПО уровня маршрутизатора выполняется объектами маршрутизатора. Объекты маршрутизатора обычно объявляются в начале файлов маршрутизатора, например ~/example-app/routes/index.js, с помощью команды типа var router = express.Router(). Они используются для задач, связанных с конкретным компонентом приложения.
+		 			</li>
+				</ul>
+				<p>
+				Если вы знакомы с платформами, в которых используется конструкция Модель-Представление-Контроллер (MVC), вы можете думать о маршрутизаторах Express JS как о контроллерах. Они помогают разделить приложение на управляемые и простые в организации компоненты.
+				</p>
+				<p>
+				В базовом приложении, установленном выше, app.js выполняет функцию промежуточного программного обеспечения уровня приложения для обнаружения ошибок 404.
+				</p>
+				app.js
+				<div class="code">
+					// [...]<br><br>
+
+app.use('/', ;<br><br>
+
+// [...]<br><br>
+
+app.use(function(req, res, next) {<br>
+  next(createError(404));<br>
+});<br><br>
+
+// error handler<br>
+app.use(function(err, req, res, next) {<br>
+  // set locals, only providing error in development<br>
+  res.locals.message = err.message;<br>
+  res.locals.error = req.app.get('env') === 'development' ? err : {};<br>
+  // render the error page<br>
+  res.status(err.status || 500);<br>
+  res.render('error');<br>
+});<br>
+				</div>
+				<p>
+				Вышеупомянутое также содержит специальную функцию промежуточного программного обеспечения для обработки ошибок. Эти функции принимают параметр err в дополнение к параметрам req, res и next.
+				</p>
+				<p>
+Со своей стороны, ~/example-app/routes/index.js запускает промежуточное программное обеспечение уровня маршрутизатора для обработки запросов всякий раз, когда пользователь посещает базовый URL-адрес (/).
+				</p>
+				routes/index.js
+				<div class="code">
+					router.get('/', function(req, res, next) {<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;res.render('index', { title: 'Express' });<br>
+
+});
+
+				</div>
+				<p>
+				В дополнение к функциям промежуточного программного обеспечения Express JS по умолчанию у вас есть возможность написать свои собственные. Это может быть чрезвычайно полезно при работе с более крупными и сложными приложениями, поведение которых часто повторяется.
+				</p>
+				<h3 id="conclusion">Вывод</h3>
+				<p>
+				При работе с Express JS следует иметь в виду, что он предлагает широкий спектр возможностей. Он способен обрабатывать широкий спектр веб-приложений и шаблонов проектирования.
+				</p>
+				<p>
+Это руководство призвано заложить основу для начала работы. Чтобы продолжить изучение возможностей Express JS для ваших веб-приложений, обязательно просмотрите их официальную документацию. Они предоставляют множество примеров для работы, в том числе пример с использованием шаблона проектирования MVC. Пример MVC особенно полезен для изучения возможностей Express JS и понимания возможностей разработки приложений.
+				</p>
 			</div>
 		</div>
 	</div>
 </template>
 
-<style scoped>
-.code {
-	text-align: left;
-	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
-	text-indent: 0;
-	background-color: #222;
-	border: 2px solid #444;
-	border-radius: 0.5rem;
-	margin: 1rem 0;
-	padding: 2rem;
-	z-index: 999;
-	color: #fff
-}
-.contents ul li {
-	margin-top: 0.5rem;
-}
-.contents ul {
-	text-align: left;
-	list-style: none;
-	padding-left: 1.25rem;
-	padding-right: 1rem;
-}
-.contents {
-	width: 20rem;
-	height: 100%;
-	background-color: #222;
-}
-.article {
-	display: flex;
-	gap: calc(60vw - 45rem);
-}
-.article-text h3 {
-	text-align: left;
-}
-.article-text ol {
-	text-indent: .5em;
-	text-align: left;
-	max-width: 60ch;
-	margin: 1rem auto;
-}
-.article-text p {
-	text-indent: 1.5em;
-	text-align: left;
-	max-width: 60ch;
-	margin: 1rem auto;
-}
-.article-text {
-	padding: 2rem 2rem;
-	padding-top: 4rem;
-}
-.contents-open {
-	display: none;
-}
-@media (max-width: 48em) {
-	.contents-open:checked ~ .contents {
-		left: 0;
-	}
-	.contents-open:checked {
-		left: calc(60% + 1rem);
-	}
-	.contents-open {
-		display: block;
-		position: absolute;
-		width: 2rem; height: 2rem;
-		left: 1rem;
-		top: 5rem;
-	}
-	.contents {
-		width: 60%;
-		position: absolute;
-		left: -60%;
-	}
-}
-</style>
+<style lang="scss" src="../../../styles/articles.scss"></style>
 
 <script setup>
 import { onMounted } from 'vue'
