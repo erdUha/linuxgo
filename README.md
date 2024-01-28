@@ -1,7 +1,23 @@
-# Vue 3 + Vite
+# Vue 3 + Vite + ExpressJS
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This project was made using Vue 3 with Vite on Front-End and ExpressJS on Back-End.
 
-## Recommended IDE Setup
+## Prerequirements
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Install [pnpm] (https://www.npmjs.com/package/pnpm) and postgreSQL on your system
+
+- Add environment variables to your system based on `backend/db.js` and `backend/server.js`
+
+## Commands
+
+- To build run `pnpm run build`. The `dist` folder will be created inside `backend/`.
+
+- To run front-end in developer mode run `pnpm run dev`.
+
+- To Preview the project run `pnpm run preview`.
+
+# Backend
+
+- Main backend file is `backend/server.js`.
+
+- Database file is `backend/db.js`.

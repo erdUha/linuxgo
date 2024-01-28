@@ -1,6 +1,5 @@
 const express = require('express'); // Подключение Express.js
 const session = require('express-session'); // Сессия express
-const fs = require('fs');
 
 const db = require('./db'); // Подключение базы данных
 const bcrypt = require('bcrypt'); // Необходим для хеширования и сравнения паролей
